@@ -35,7 +35,7 @@ void dataUploadThread(void* arg);
 
 // Constants
 const std::string ALPRD_CONFIG_FILE_NAME="alprd.conf";
-const std::string OPENALPR_CONFIG_FILE_NAME="openalpr.conf";
+const std::string OPENALPR_CONFIG_FILE_NAME="openalpr_";
 const std::string DEFAULT_LOG_FILE_PATH="/var/log/alprd.log";
 
 const std::string BEANSTALK_QUEUE_HOST="127.0.0.1";
@@ -129,15 +129,9 @@ int main( int argc, const char** argv )
     return 1;
   }
   
-  std::string openAlprConfigFile = configDir + OPENALPR_CONFIG_FILE_NAME;
   std::string daemonConfigFile = configDir + ALPRD_CONFIG_FILE_NAME;
   
   // Validate that the configuration files exist
-  if (fileExists(openAlprConfigFile.c_str()) == false)
-  {
-    std::cerr << "error, openalpr.conf file does not exist at: " << openAlprConfigFile << std::endl;
-    return 1;
-  }
   if (fileExists(daemonConfigFile.c_str()) == false)
   {
     std::cerr << "error, alprd.conf file does not exist at: " << daemonConfigFile << std::endl;
@@ -192,6 +186,12 @@ int main( int argc, const char** argv )
 
   for (int i = 0; i < daemon_config.stream_urls.size(); i++)
   {
+    openAlprConfigFile = configDir + OPENALPR_CONFIG_FILE_NAME + patch::to_string(i+1) + ".conf";
+    if (fileExists(openAlprConfigFile.c_str()) == false)
+    {
+      std::cerr << "error, openalpr.conf file does not exist at: " << openAlprConfigFile << std::endl;
+      return 1;
+    }
     pid = fork();
     if (pid == (pid_t) 0)
     {
