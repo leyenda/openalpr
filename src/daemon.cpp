@@ -150,7 +150,8 @@ int main( int argc, const char** argv )
     log4cplus::SharedAppenderPtr myAppender(new log4cplus::RollingFileAppender(logFile));
     myAppender->setName("alprd_appender");
     // Redirect std out to log file
-    logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("alprd"));
+    auto tmp_logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("alprd"));
+    logger = tmp_logger;
     logger.addAppender(myAppender);
     
     
@@ -161,7 +162,8 @@ int main( int argc, const char** argv )
     //log4cplus::SharedAppenderPtr myAppender(new log4cplus::ConsoleAppender());
     //myAppender->setName("alprd_appender");
     // Redirect std out to log file
-    logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("alprd"));
+    auto tmp_logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("alprd"));
+    logger = tmp_logger;
     //logger.addAppender(myAppender);
     
     LOG4CPLUS_INFO(logger, "Running OpenALPR daemon in the foreground.");
