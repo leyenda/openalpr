@@ -2,6 +2,7 @@
 
 #include <unistd.h>
 #include <sstream>
+#include <string>
 #include <execinfo.h>
 
 #include "daemon/beanstalk.hpp"
@@ -185,7 +186,7 @@ int main( int argc, const char** argv )
   pid_t pid;
   
   std::vector<tthread::thread*> threads;
-
+  std::string openAlprConfigFile = "";
   for (int i = 0; i < daemon_config.stream_urls.size(); i++)
   {
     openAlprConfigFile = configDir + OPENALPR_CONFIG_FILE_NAME + patch::to_string(i+1) + ".conf";
